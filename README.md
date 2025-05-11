@@ -11,8 +11,6 @@ Live url : https://kart-rag-chat-bot.netlify.app
 
 This component of the backend is responsible for fetching news articles, extracting clean content, converting it into embeddings using a SentenceTransformer model, and storing those embeddings in a persistent Chroma vector database for semantic search.
 
----
-
 ### 📌 Model Used
 
 ```python
@@ -65,4 +63,29 @@ collection.add(
 ```
 
 The above process is done for each document and thus embeddings are inserted into a persisted vector DB
+
+---
+
+### 🎯 Query api to extract top K related paragraphs
+
+This is a flask server which is responsible to extract related paragrphs according the user queries and number of results the payload expects.
+
+#### Overall flow
+
+Once the user query is recieved to the /query api, the user query is converted to embeddings using the SentenceTransformer - all-MiniLM-L6-v2 model. This embedding is then used to query the vector db using the following command.
+
+```python
+collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k
+    )
+```
+
+The returned items are then sent as JSON response.
+
+---
+
+### 🧶 API's to save user sessions, clear session, save and fetch chat history
+
+
 
