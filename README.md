@@ -87,5 +87,27 @@ The returned items are then sent as JSON response.
 
 ### 🧶 API's to save user sessions, clear session, save and fetch chat history
 
+#### Redis
+
+- Firstly a redis server is initialised, UPSTASH redis server provider is used for the project.
+
+```javascript
+const { createClient } = require('redis');
+
+// Create a Redis client and connect to Upstash Redis
+const redisClient = createClient({
+    url: process.env.UPSTASH_REDIS_URL
+});
+```
+- A POST api named as /session route is created : This code defines a POST /session route that generates a unique session ID using uuidv4(). It then stores an empty array in Redis with the key session:{sessionId}. The newly created session ID is returned in the response. If an error occurs during the process, a 500 error is sent back.
+
+- A POST api named as /query : It is responsible for getting all the related paragraphs from the vector db via the flask api. Sending the query and the paragraphs to gemini and get a response for the query for the provided context. The api also saves the user chat history in redis for future access.
+
+- A GET api named as /history : This API is responsible for getting the whole chat history for the given session ID.
+
+- A DELETE api for deleting the session : This API deleted the values for the given session ID and thus conversation can be deleted and a new session can be started.
+
+
+
 
 
