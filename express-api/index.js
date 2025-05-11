@@ -33,7 +33,7 @@ app.post('/query', async (req, res) => {
     }
 
     try {
-        // 1. Query your Flask vector API
+        
         const flaskRes = await axios.post(`${process.env.FLASK_API_URL}/query`, {
             query,
             n_results
@@ -53,7 +53,7 @@ app.post('/query', async (req, res) => {
         
         Question: ${query}`;
         
-        // 2. Call Gemini API
+      
         const geminiRes = await axios.post(
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
             {
@@ -74,7 +74,7 @@ app.post('/query', async (req, res) => {
 
         const geminiAnswer = geminiRes.data.candidates?.[0]?.content?.parts?.[0]?.text || "No answer generated.";
 
-        // 3. Save query + answer to Redis history
+        
         const sessionKey = `session:${session_id}`;
         const prevHistory = await redisClient.get(sessionKey);
         const updatedHistory = prevHistory ? JSON.parse(prevHistory) : [];
@@ -86,7 +86,6 @@ app.post('/query', async (req, res) => {
 
         await redisClient.set(sessionKey, JSON.stringify(updatedHistory)); 
 
-        // 4. Return response
         res.json({
             query,
             answer: geminiAnswer,
@@ -156,9 +155,6 @@ app.delete('/session', async (req, res) => {
         res.status(500).json({ error: 'Failed to clear session' });
     }
 });
-
-
-
 
 
 app.listen(port, () => {
