@@ -23,7 +23,7 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 This model converts sentences, paragraphs, or short text into dense vector embeddings (i.e., numerical representations in high-dimensional space) such that semantically similar texts are close together in vector space.
 
-### 💾 Persistent ChromaDB Setup
+### 📌 Persistent ChromaDB Setup
 
 ```python
 storage_path = os.path.join(os.getcwd(), "chroma_store")
@@ -42,11 +42,11 @@ except chromadb.errors.NotFoundError:
 
 The above code sets up a persistent local ChromaDB database and ensures a collection named news_articles exists to store text embeddings.
 
-### NEWS Api
+### 📌 NEWS Api
 
 Once the above setup is done, api call is made to NEWS API and it returns a set of URL's of new articles.
 
-### Convert each article to embeddings
+### 📌 Convert each article to embeddings
 
 Once article URL's are fetched trafilatura library is used to get the raw HTML content of the page and then this HTML content is converted to embeddings using the SentenceTransformer - all-MiniLM-L6-v2 model.
 
